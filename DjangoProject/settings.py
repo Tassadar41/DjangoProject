@@ -171,3 +171,5 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'project_cache'),
     }
 }
+
+# add some comments here for git test
