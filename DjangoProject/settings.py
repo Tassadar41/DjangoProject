@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'captcha',
     'women.apps.WomenConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

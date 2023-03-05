@@ -9,11 +9,13 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from rest_framework import generics
 
 
 from .forms import *
 from .models import *
 from .utils import *
+from .serializers import *
 
 
 
@@ -33,6 +35,9 @@ class WomenHome(DataMixin, ListView):
     def get_queryset(self):
         return Women.objects.filter(is_published=True).select_related('cat')
 
+class WomenAPIView(generics.ListAPIView):
+    queryset = Women.objects.filter(is_published=True).select_related('cat')
+    serializer_class = WomenSerializer
 
 # Create your views here.
 # def index(request):  # HttpRequest

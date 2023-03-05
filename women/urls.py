@@ -21,5 +21,7 @@ urlpatterns = [
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     # path('category/<slug:cat_slug>/', show_category, name='category'),
     path('category/<slug:cat_slug>/', WomenCategory.as_view(), name='category'),
-    path('captcha/', include('captcha.urls'))
+    path('captcha/', include('captcha.urls')),
+
+    path('rest/home/', WomenAPIView.as_view(), name='homeRest'),
 ]
