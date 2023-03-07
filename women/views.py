@@ -2,6 +2,7 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
+from django.forms import model_to_dict
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -10,7 +11,8 @@ from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from rest_framework import generics
-
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .forms import *
 from .models import *
@@ -35,9 +37,30 @@ class WomenHome(DataMixin, ListView):
     def get_queryset(self):
         return Women.objects.filter(is_published=True).select_related('cat')
 
-class WomenAPIView(generics.ListAPIView):
-    queryset = Women.objects.filter(is_published=True).select_related('cat')
-    serializer_class = WomenSerializer
+class WomenAPIView(APIView):
+    def get(self, request):
+        women = Women.objects.all()
+        return Response({'posts': WomenSerializer(women, many=True).data})
+
+    def post(self, request):
+        serializer = WomenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        post_new = Women.objects.create(
+            title=request.data['title'],
+            content=request.data['content'],
+            slug=request.data['slug'],
+            photo=request.data['photo'],
+            cat_id=request.data['cat_id'],
+        )
+        #return Response({'post': model_to_dict(post_new)})
+        return Response({'post': WomenSerializer(post_new).data})
+
+# class WomenAPIView(generics.ListAPIView):
+#     queryset = Women.objects.filter(is_published=True).select_related('cat')
+#     serializer_class = WomenSerializer
+
+
 
 # Create your views here.
 # def index(request):  # HttpRequest
