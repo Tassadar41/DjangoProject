@@ -176,3 +176,11 @@ CACHES = {
 }
 
 # add some comments here for git test
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        #нижнеее комитить что бы выключить отображение в браузеере страницы
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}

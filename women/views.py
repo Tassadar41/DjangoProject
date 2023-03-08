@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -37,9 +37,21 @@ class WomenHome(DataMixin, ListView):
     def get_queryset(self):
         return Women.objects.filter(is_published=True).select_related('cat')
 
-class WomenAPIList(generics.ListCreateAPIView):
+class WomenViewSet(viewsets.ModelViewSet):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
+
+# class WomenAPIList(generics.ListCreateAPIView):
+#     queryset = Women.objects.all()
+#     serializer_class = WomenSerializer
+#
+# class WomenAPIUpdate(generics.UpdateAPIView):
+#     queryset = Women.objects.all()
+#     serializer_class = WomenSerializer
+#
+# class WomenAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Women.objects.all()
+#     serializer_class = WomenSerializer
 
 class WomenAPIView(APIView):
     def get(self, request):
