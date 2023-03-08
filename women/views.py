@@ -37,6 +37,10 @@ class WomenHome(DataMixin, ListView):
     def get_queryset(self):
         return Women.objects.filter(is_published=True).select_related('cat')
 
+class WomenAPIList(generics.ListCreateAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+
 class WomenAPIView(APIView):
     def get(self, request):
         women = Women.objects.all()
@@ -45,16 +49,39 @@ class WomenAPIView(APIView):
     def post(self, request):
         serializer = WomenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        post_new = Women.objects.create(
-            title=request.data['title'],
-            content=request.data['content'],
-            slug=request.data['slug'],
-            photo=request.data['photo'],
-            cat_id=request.data['cat_id'],
-        )
         #return Response({'post': model_to_dict(post_new)})
-        return Response({'post': WomenSerializer(post_new).data})
+        return Response({'post': serializer.data})
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed"})
+
+        try:
+            instance = Women.objects.get(pk=pk)
+        except:
+            return Response({"error": "Object not found"})
+
+        ser = WomenSerializer(data=request.data, instance=instance)
+        ser.is_valid(raise_exception=True)
+        ser.save()
+        return Response({"post": ser.data})
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method DELETE not allowed"})
+
+        try:
+            instance = Women.objects.get(pk=pk)
+
+        except:
+            return Response({"error": "Object not found"})
+
+        instance.delete()
+        return Response({"post": "Deleted post: "+str(pk)})
 
 # class WomenAPIView(generics.ListAPIView):
 #     queryset = Women.objects.filter(is_published=True).select_related('cat')

@@ -23,5 +23,8 @@ urlpatterns = [
     path('category/<slug:cat_slug>/', WomenCategory.as_view(), name='category'),
     path('captcha/', include('captcha.urls')),
 
-    path('api/v1/womenlist', WomenAPIView.as_view(), name='homeRest'),
+    path('api/v1/womenlist/', WomenAPIView.as_view()),
+    path('api/v1/womenlist/<int:pk>/', WomenAPIView.as_view()),
+    path('api/v1/womenlistmodel/', WomenAPIList.as_view()),
+    #path('api/v1/womenlistmodel/<int:pk>/', WomenAPIList.as_view()),
 ]
