@@ -61,4 +61,9 @@ urlpatterns = [
     # path('api/v1/womenlistmodel/<int:pk>/', WomenViewSet.as_view({'put': 'update'})),
     #path('api/v1/womenlistmodel/<int:pk>/', WomenAPIList.as_view()),
     # path('api/v1/', include(router.urls)), #http://127.0.0.1:8000/api/v1/women
+
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
+
+    path('api/v1/auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
 ]
