@@ -60,6 +60,7 @@ from .models import *
 #     print(serializer.validated_data,sep='\n')
 
 class WomenSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Women
         # fields = ('title', 'slug', 'content', 'photo', 'cat')

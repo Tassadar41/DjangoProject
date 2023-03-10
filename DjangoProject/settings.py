@@ -15,6 +15,8 @@ from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import rest_framework.permissions
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # read from secret setting file
@@ -182,5 +184,9 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         #нижнеее комитить что бы выключить отображение в браузеере страницы
         'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+
     ]
 }

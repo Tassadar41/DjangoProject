@@ -4,8 +4,29 @@ from rest_framework import routers
 
 from .views import *
 
-router = routers.SimpleRouter()
-router.register(r'women', WomenViewSet)
+# class MyCustomRouter(routers.SimpleRouter):
+#     routers = [
+#         routers.Route(
+#             url=r'^{prefix}$',
+#             mapping={'get': 'list',},
+#             name='{basename}-list',
+#             detail=False,
+#             initkwargs={'suffix': 'List'}
+#         ),
+#         routers.Route(
+#             url=r'^{prefix}{lookup}$',
+#             mapping={'get': 'retrieve'},
+#             name='{basename}-list',
+#             detail=True,
+#             initkwargs={'suffix': 'Detail'}
+#         )
+#     ]
+
+
+#router = routers.DefaultRouter()
+#router = routers.SimpleRouter()
+#router = MyCustomRouter()
+#router.register(r'women', WomenViewSet, basename='women')
 
 urlpatterns = [
 
@@ -29,13 +50,15 @@ urlpatterns = [
 
     path('api/v1/womenlist/', WomenAPIView.as_view()),
     path('api/v1/womenlist/<int:pk>/', WomenAPIView.as_view()),
-    # path('api/v1/womenlistmodel/', WomenAPIList.as_view()),
-    # path('api/v1/womenlistmodel/<int:pk>/', WomenAPIUpdate.as_view()),
-    #
-    # path('api/v1/womendetail/<int:pk>/', WomenAPIDetailView.as_view()),
+
+
+    path('api/v1/womenlistmodel/', WomenAPIList.as_view()),
+    path('api/v1/womenlistmodel/<int:pk>/', WomenAPIUpdate.as_view()),
+    path('api/v1/womenlistmodel/delete/<int:pk>/', WomenAPIDestroy.as_view()),
+    path('api/v1/womendetail/<int:pk>/', WomenAPIDetailView.as_view()),
 
     # path('api/v1/womenlistmodel/', WomenViewSet.as_view({'get': 'list'})),
     # path('api/v1/womenlistmodel/<int:pk>/', WomenViewSet.as_view({'put': 'update'})),
     #path('api/v1/womenlistmodel/<int:pk>/', WomenAPIList.as_view()),
-    path('api/v1/', include(router.urls)), #http://127.0.0.1:8000/api/v1/women
+    # path('api/v1/', include(router.urls)), #http://127.0.0.1:8000/api/v1/women
 ]
