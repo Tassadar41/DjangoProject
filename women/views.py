@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from rest_framework import generics, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
@@ -55,10 +56,16 @@ class WomenViewSet(viewsets.ModelViewSet):
         cats = Category.objects.get(pk=pk)
         return Response({'cats': cats.name})
 
+class WomenAPIListPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = "page_size"
+    max_page_size = 1000
+
 class WomenAPIList(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    pagination_class = WomenAPIListPagination
 
 # class WomenAPIUpdate(generics.UpdateAPIView):
 #     queryset = Women.objects.all()
